@@ -1,9 +1,25 @@
-﻿$path = "D:\Documents\Battery"
-$filename = Get-Date -Format 'dd-MMM-yyyy'
+﻿#paramteres
+# $path to store the report
+# $open to open report after it's generated
+param ($path = "D:\Documents\Battery", [switch] $open)
 
-If(!(Test-Path -Path "D:\Documents\Battery"))
+#filename is the current date
+$filename = Get-Date -Format 'dd-MMM-yyyy'
+$file = "$path\$filename.html"
+
+#check if path exists. If not creates the folder
+If(!(Test-Path -Path "$path"))
 {
     New-Item  -ItemType Directory -Path $path
 }
 
-powercfg /batteryreport -output "D:\Documents\Battery\$filename.html"
+#generate the report
+powercfg /batteryreport -output "$file"
+
+#open the report
+If($open){
+    Invoke-Item $file
+}
+
+
+
